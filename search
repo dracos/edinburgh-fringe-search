@@ -1,0 +1,33 @@
+#!/usr/bin/python
+
+import simplejson, subprocess, sys
+
+search = {}
+for arg in sys.argv[1:]:
+    if arg[0:6] == 'venue:':
+        search['venue'] = 'venue_name%3A' + arg[6:]
+    search['search'] = arg
+
+if not search:
+    raise Exception, "Specify search or venue"
+
+url = "http://www.edfringe.com/solr/select?q=show_performer%3A[[[SEARCH]]]&fq=dates%3A%5B2010-08-01T06%3A00%3A00Z%20TO%202010-09-01T06%3A00%3A00Z%5D&fq=[[[VENUE]]]&fl=name%2Cgroup_name%2Cname_prefix%2Cdescription%2Ccalendar_data%2Cvenue_name%2Ctimes&facet=true&facet.field=venue_name&facet.mincount=1&f.subcategories.facet.limit=100&json.nl=map&wt=json&dm_cpi=106&dm_xhr=1"
+url = url.replace('[[[SEARCH]]]', search.get('search', ''))
+url = url.replace('[[[VENUE]]]', search.get('venue', ''))
+
+output = subprocess.Popen('curl -s -e http://www.edfringe.com/ "%s"' % url, stdout=subprocess.PIPE, shell=True).communicate()[0]
+json = simplejson.loads(output)['response']
+num = json['numFound']
+json = json['docs']
+
+for row in json:
+    print row['name'], row['times'], row['venue_name']
+    print '    ' + reduce(lambda line, word, width=100: '%s%s%s%s' %
+        (line,
+         ' \n'[(len(line)-line.rfind('\n')-1 + len(word.split('\n',1)[0]) >= width)],
+         '    ' if (len(line)-line.rfind('\n')-1 + len(word.split('\n',1)[0]) >= width) else '',
+         word
+        ),
+        row['description'].split(' ')
+    )
+

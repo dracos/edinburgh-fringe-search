@@ -1,0 +1,22 @@
+Nothing fancy, it's just rather quicker to type "search hamlet" than use the
+website.
+
+Example usage
+=============
+
+$ search asbo
+
+Homo Asbo 17:45 Gilded Balloon Teviot
+    The hardest man on the estate has just come out and has decided to go straight. Armed with only his
+    guitar and ghetto blaster, he rewrites gay history and assassinates celebrity bad boys, bigots
+    and men who wax.
+Asbo Fairy Tales 12:20 C
+    Snow White claims paternity against all seven dwarves on 'Jeremy Kyle'! Big, bad bailiff pursues
+    three little pigs for credit card fraud! Moldilocks protests middle-class bear oppression! A
+    proper mash-up of princesses and asbonauts innit!
+
+To do
+=====
+
+It needs to parse the calendar returned to tell me the days a show isn't on.
+
