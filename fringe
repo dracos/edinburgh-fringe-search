@@ -24,20 +24,22 @@ url = url.replace('[[[START]]]', search.get('start', ''))
 output = subprocess.Popen('curl -s -e http://www.edfringe.com/ "%s"' % url, stdout=subprocess.PIPE, shell=True).communicate()[0]
 json = simplejson.loads(output)['response']
 num = json['numFound']
-print "%d results\n" % num
+print "%d result%s\n" % (num, 's' if num!=1 else '')
 json = json['docs']
 
 for row in json:
     print row['name'], row['times'], row['venue_name']
     print 'Dates:',
+    sold = []
     for date, details in sorted(simplejson.loads(row['calendar_data']).items()):
         date = date.replace('2010-08-', '')
         if details['c'] == 'in_past': continue
         if details['c'] == 'tickets-soldout':
-            print 'X%sX' % date,
-        else:
-            print date,
+            sold.append(date)
+            continue
+        print date,
     print
+    if sold: print "Sold out: %s" % ' '.join(sold)
     print '    ' + reduce(lambda line, word, width=100: '%s%s%s' %
         (line,
          '\n    ' if (len(line)-line.rfind('\n')-1 + len(word.split('\n',1)[0]) >= width) else ' ',
