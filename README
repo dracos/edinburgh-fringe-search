@@ -18,5 +18,5 @@ Asbo Fairy Tales 12:20 C
 To do
 =====
 
-It needs to parse the calendar returned to tell me the days a show isn't on.
-
+* It needs to parse the calendar returned to tell me the days a show isn't on.
+* It needs to allow pagination somehow, only shows 10 results max currently.
